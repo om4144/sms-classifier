@@ -1,0 +1,44 @@
+# ==========================================================
+# Environments & Credentials
+# ==========================================================
+# Virtual environments (Prevents thousands of dependency files from breaking git)
+.venv/
+venv/
+ENV/
+env/
+
+# Environment variable files containing API keys
+.env
+.env.local
+
+# ==========================================================
+# Python Cache & Build Artifacts
+# ==========================================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+
+# Logs
+*.log
+logs/
+
+# ==========================================================
+# IDEs & System Files
+# ==========================================================
+
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/launch.json
+
+# Operating System specific files
+.DS_Store
+Thumbs.db
