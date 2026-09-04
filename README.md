@@ -19,6 +19,7 @@
   - [Why Do We Need It?](#why-do-we-need-it)
   - [How Machine Learning Solves This](#how-machine-learning-solves-this)
   - [Key Challenges](#key-challenges)
+- [Dataset](#-dataset)
 
 ---
 
@@ -63,3 +64,12 @@ Machine Learning approach:
 * 📐 **Short Text Limit:** SMS messages are capped at 160 characters, resulting in sparse data matrices with limited contextual cues.
 * 🔤 **Adversarial Obfuscation:** Spammers deliberately manipulate text using slang, typos, emojis, and spaced lettering (e.g., `F r e e` or `b@nk`).
 * ⚠️ **High Cost of False Positives:** Misclassifying a critical message (like a bank OTP or doctor appointment reminder) as spam severely hurts user trust. Precision must be prioritized.
+
+## 📊 Dataset
+ 
+| Detail | Description |
+| :--- | :--- |
+| **Source** | [UCI SMS Spam Collection](https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset)|
+| **Size** | ~5,574 labeled SMS messages |
+| **Classes** | `ham` (≈87%), `spam` (≈13%) — imbalanced |
+| **Format** | Tab-separated text file: `label`, `message` |
