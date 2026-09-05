@@ -33,6 +33,8 @@
   - [Word Frequency](#-word-frequency)
   - [Character & Punctuation Patterns](#-character--punctuation-patterns)
   - [Correlation with Target](#-correlation-with-target)
+  
+- [Text Preprocessing](#-text-preprocessing)
 
 ---
 
@@ -257,5 +259,81 @@ Message length, digit count, and uppercase word count all show a **positive corr
 <div align="center">
 <img src="assets/corr_rel_heatmap.png" alt="Correlation with Target" width="500"/>
 </div>
+
+---
+
+## 🔤 Text Preprocessing
+
+Before vectorization, each SMS message is processed through the following pipeline:
+
+| Step | Action | Description |
+| :---: | :--- | :--- |
+| **01** | 🔡 **Lowercasing** | Convert all text to lowercase to ensure uniformity. |
+| **02** | ✂️ **Tokenization** | Split text into individual words (tokens). |
+| **03** | 🧹 **Remove Special Characters** | Remove special characters like `(`, `)`, `[`, `]`, `+`, `-`, etc. |
+| **04** | 🚫 **Remove Stopwords & Punctuation** | Eliminate common words (e.g., *the, is, and*) and punctuation marks that add no predictive value. |
+| **05** | 🌱 **Stemming** | Reduce words to their root form (e.g., *"calling" → "call"*). |
+
+---
+
+### ⚙️ Preprocessing Function
+
+```python
+import string
+import pandas as pd
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem.porter import PorterStemmer
+
+ps = PorterStemmer()
+
+def preprocessing(text: str):
+  # converting text into lower case
+  text = text.lower()
+
+  # breaking text into tokens
+  text = word_tokenize(text)
+
+  # removing special character's
+  ans = [word for word in text if word.isalnum()]
+
+  # removing stopwords and punchation's from the text
+  text = ans[:]
+  ans.clear()
+
+  ans = []
+  for word in text:
+    if word not in stopwords.words("english") and word not in string.punctuation:
+      ans.append(word)
+
+  # apply steaming on the text
+  text = ans[:]
+  ans.clear()
+
+  ans = [ps.stem(word) for word in text]
+  
+  return " ".join(ans)
+```
+
+```python
+df["preprocessed_text"] = df["text"].apply(preprocessing)
+```
+
+---
+
+### ☁️ Most Frequent Words After Preprocessing
+
+Word clouds were generated separately for each class to visualize dominant vocabulary post-cleaning.
+
+<table align="center">
+<tr>
+<th align="center">🟢 Ham — Word Cloud</th>
+<th align="center">🔴 Spam — Word Cloud</th>
+</tr>
+<tr>
+<td align="center"><img src="assets/preprocess_wordcloud_ham.png" alt="Ham Word Cloud" width="380"/></td>
+<td align="center"><img src="assets/preprocess_wordcloud_spam.png" alt="Spam Word Cloud" width="380"/></td>
+</tr>
+</table>
 
 ---
