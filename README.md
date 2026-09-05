@@ -27,6 +27,13 @@
   - [Handle Missing Values](#-step-4--handle-missing-values)
   - [Remove Duplicates](#-step-5--remove-duplicates)
 
+- [Exploratory Data Analysis (EDA)](#-exploratory-data-analysis-eda)
+  - [Class Distribution](#-class-distribution)
+  - [Message Length](#️-message-length)
+  - [Word Frequency](#-word-frequency)
+  - [Character & Punctuation Patterns](#-character--punctuation-patterns)
+  - [Correlation with Target](#-correlation-with-target)
+
 ---
 
 ## 🎯 Overview
@@ -174,5 +181,81 @@ Three metadata columns carried almost no data and were dropped:
 | Duplicate rows found | **403** |
 | Dataset size before | (5572, 2) |
 | Dataset size after | **(5169, 2)** |
+
+---
+
+## 🔍 Exploratory Data Analysis (EDA)
+
+> Key insights uncovered before modeling — understanding the data shaped feature engineering and model choice.
+
+---
+
+### 🟢🔴 Class Distribution
+
+The dataset is **imbalanced**, which directly influenced the choice of evaluation metrics (precision/recall over raw accuracy).
+
+| Class | Proportion |
+| :--- | :--- |
+| 🟢 Ham | ~87% |
+| 🔴 Spam | ~13% |
+
+<div align="center">
+<img src="assets/class_distribution.png" alt="Class Distribution" width="500"/>
+</div>
+
+---
+
+### ✉️ Message Length
+
+Spam messages tend to run **noticeably longer** than genuine ones — likely due to promotional filler text and links.
+
+| Class | Avg. Length (characters) |
+| :--- | :--- |
+| 🔴 Spam | ~138 |
+| 🟢 Ham | ~70 |
+
+<div align="center">
+<img src="assets/message_length_distribution.png" alt="Message Length Distribution" width="480"/>
+<img src="assets/avg_msg_length.png" alt="Average Message Length" width="480"/>
+</div>
+
+---
+
+### 🔤 Word Frequency
+
+> [!TIP]
+> Spam vocabulary skews toward urgency and reward-based language, while Ham vocabulary reflects everyday conversation.
+
+<table align="center">
+<tr>
+<th align="center">🔴 Spam — Common Words</th>
+<th align="center">🟢 Ham — Common Words</th>
+</tr>
+<tr>
+<td align="center"><code>free</code>, <code>win</code>, <code>call</code>, <code>claim</code>, <code>urgent</code></td>
+<td align="center"><code>ok</code>, <code>home</code>, <code>later</code>, <code>going</code>, <code>love</code></td>
+</tr>
+<tr>
+<td align="center"><img src="assets/wordcloud_spam.png" alt="Spam Word Cloud" width="380"/></td>
+<td align="center"><img src="assets/wordcloud_ham.png" alt="Ham Word Cloud" width="380"/></td>
+</tr>
+</table>
+
+---
+
+### 🔣 Character & Punctuation Patterns
+
+* Spam messages use **more special characters and digits** (e.g., phone numbers, `£`/`$` symbols).
+* Excessive **capital letters** and **exclamation marks** appear more frequently in spam.
+
+---
+
+### 📊 Correlation with Target
+
+Message length, digit count, and uppercase word count all show a **positive correlation** with spam likelihood — making them strong candidates as engineered features alongside TF-IDF.
+
+<div align="center">
+<img src="assets/corr_rel_heatmap.png" alt="Correlation with Target" width="500"/>
+</div>
 
 ---
