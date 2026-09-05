@@ -20,6 +20,12 @@
   - [How Machine Learning Solves This](#how-machine-learning-solves-this)
   - [Key Challenges](#key-challenges)
 - [Dataset](#-dataset)
+- [Data Cleaning](#-data-cleaning)
+  - [Inspect Shape & Nulls](#-step-1--inspect-shape--nulls)
+  - [Drop Unnecessary Columns](#️-step-2--drop-unnecessary-columns)
+  - [Target Encoding](#-step-3--target-encoding)
+  - [Handle Missing Values](#-step-4--handle-missing-values)
+  - [Remove Duplicates](#-step-5--remove-duplicates)
 
 ---
 
@@ -73,3 +79,100 @@ Machine Learning approach:
 | **Size** | ~5,574 labeled SMS messages |
 | **Classes** | `ham` (≈87%), `spam` (≈13%) — imbalanced |
 | **Format** | Tab-separated text file: `label`, `message` |
+
+## 🧹 Data Cleaning
+
+> Raw data was processed through a structured pipeline before any modeling or analysis began.
+
+| Step | Action | Description |
+| :---: | :--- | :--- |
+| **01** | 🔎 **Inspect Shape & Nulls** | Check dataset size, column data types, and null value counts. |
+| **02** | 🗑️ **Drop Unnecessary Columns** | Remove unused metadata columns (`Unnamed: 2/3/4`), each **>99% null**. |
+| **03** | 🔢 **Target Encoding** | Convert categorical target classes into numeric format. |
+| **04** | 🩹 **Handle Missing Values** | Impute or remove missing values in critical features. |
+| **05** | 🧬 **Remove Duplicates** | Eliminate duplicate rows to prevent data leakage in modeling. |
+
+---
+
+### 🔎 Step 1 — Inspect Shape & Nulls
+
+**Shape:** `(5572, 5)`
+
+| # | Column | Non-Null Count | Dtype |
+| :---: | :--- | :---: | :---: |
+| 0 | `v1` | 5572 non-null | str |
+| 1 | `v2` | 5572 non-null | str |
+| 2 | `Unnamed: 2` | 50 non-null | str |
+| 3 | `Unnamed: 3` | 12 non-null | str |
+| 4 | `Unnamed: 4` | 6 non-null | str |
+
+---
+
+### 🗑️ Step 2 — Drop Unnecessary Columns
+
+Three metadata columns carried almost no data and were dropped:
+
+| Column | Missing Value (%) |
+| :--- | :---: |
+| `Unnamed: 2` | 99.10% |
+| `Unnamed: 3` | 99.78% |
+| `Unnamed: 4` | 99.89% |
+
+**Column rename for clarity:**
+
+| Original | Renamed To | Role |
+| :---: | :---: | :--- |
+| `v1` | `target` | Output label |
+| `v2` | `text` | Input feature |
+
+---
+
+### 🔢 Step 3 — Target Encoding
+
+> [!TIP]
+> **Encoding** converts categorical text into numeric values so ML algorithms can process it.
+
+<table align="center">
+<tr>
+<th>Technique</th>
+<th>How it Works</th>
+<th>Best For</th>
+</tr>
+<tr>
+<td><b>One-Hot Encoding</b></td>
+<td>Creates a binary column per category</td>
+<td>Unordered categories (e.g., colors)</td>
+</tr>
+<tr>
+<td><b>Ordinal Encoding</b></td>
+<td>Assigns ranked numeric values</td>
+<td>Ordered categories (e.g., low/medium/high)</td>
+</tr>
+<tr>
+<td><b>Label Encoding</b></td>
+<td>Assigns a unique integer per category</td>
+<td>Target columns in classification</td>
+</tr>
+</table>
+
+**Strategy used:** Label Encoding on the target column — `ham → 0`, `spam → 1`.
+
+---
+
+### 🩹 Step 4 — Handle Missing Values
+
+| Check | Result |
+| :--- | :---: |
+| Total missing values | **0** |
+
+---
+
+### 🧬 Step 5 — Remove Duplicates
+
+| Check | Result |
+| :--- | :---: |
+| Duplicate rows found | **403** |
+| Dataset size before | (5572, 2) |
+| Dataset size after | **(5169, 2)** |
+
+---
